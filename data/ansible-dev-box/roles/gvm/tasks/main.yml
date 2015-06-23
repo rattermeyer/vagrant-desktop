@@ -1,0 +1,21 @@
+---
+# tasks file for gvm
+# vim: noai:ts=2:sw=2:expandtab
+- name: Install gvm
+  get_url: url="http://get.gvmtool.net/" dest="{{home}}/install.sh"
+  become: yes
+  become_user: "{{ user }}"
+
+- file: path="{{home}}/install.sh" mode=u+rxw
+  become: yes
+  become_user: "{{ user }}"
+
+- shell: "{{home}}/install.sh"
+  args:
+    creates: "{{ home }}/.gvm"
+  become: yes
+  become_user: "{{ user }}"
+
+- file: path="{{home}}/install.sh" mode=u+rxw state=absent
+  become: yes
+  become_user: "{{ user }}"

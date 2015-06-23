@@ -1,0 +1,22 @@
+# vim: noai:ts=2:sw=2:expandtab
+---
+  - name: add openjdk repository
+    apt_repository: repo='ppa:openjdk-r/ppa'
+  - name: add several packages
+    apt: name={{ item }} state=present
+    with_items:
+      - git
+      - git-svn
+      - gitk
+      - meld
+      - vim
+      - openjdk-7-jdk
+      - openjdk-8-jdk
+  - name: update alternatives
+    alternatives: name={{ item.name }} path={{ item.path }}
+    with_items:
+      - { name: 'java',    path: '/usr/lib/jvm/java-8-openjdk-amd64/bin/java' }
+      - { name: 'javac',   path: '/usr/lib/jvm/java-8-openjdk-amd64/bin/javac' }
+      - { name: 'javadoc', path: '/usr/lib/jvm/java-8-openjdk-amd64/bin/javadoc' }
+      - { name: 'javah',   path: '/usr/lib/jvm/java-8-openjdk-amd64/bin/javah' }
+      - { name: 'javap',   path: '/usr/lib/jvm/java-8-openjdk-amd64/bin/javap' }

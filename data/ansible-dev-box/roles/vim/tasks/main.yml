@@ -1,0 +1,18 @@
+# vim: noai:ts=2:sw=2:expandtab
+---
+- apt: name={{item}} state=present 
+  with_items:
+    - vim
+    - build-essential
+    - cmake
+    - python-dev
+
+- name: Install Vundle
+  git: repo=https://github.com/gmarik/Vundle.vim.git dest={{home}}/.vim/bundle/Vundle.vim
+
+- name: Download vimrc
+  get_url: url="https://gist.githubusercontent.com/rattermeyer/4f2b0d48069a2f5345fd/raw/51d5baa6458ebb99662338542b6bc8b2b1391e42/vimrc" dest={{home}}/.vimrc
+
+- command: vim +PluginInstall +qall 2&> /dev/null
+  become: true
+  become_user: "{{user}}"

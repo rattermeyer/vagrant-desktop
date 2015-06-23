@@ -1,0 +1,29 @@
+# vim: noai:ts=2:sw=2:expandtab
+---
+- name: Download Apache Maven
+  get_url: url="{{maven_mirror}}/apache-maven-{{ maven_version }}-bin.tar.gz" dest=/opt/apache-maven-{{ maven_version }}.tar.gz
+
+- name: Create apache-maven directory
+  file:
+    state=directory
+    path={{maven_install_dir}}
+    owner={{user}}
+    group={{user}}
+
+- name: Remove current link
+  file: 
+    state=absent
+    path={{maven_install_dir}}/current
+
+- name: Extract archive
+  unarchive: src=/opt/apache-maven-{{ maven_version }}.tar.gz dest={{maven_install_dir}} 
+
+- name: Change ownership of Maven installation
+  file: path=/opt/apache-maven-{{ maven_version }} owner={{ user }} group={{ user }} state=directory recurse=yes
+
+- name: Create symlink
+  file:
+    state=link
+    src={{maven_install_dir}}/apache-maven-{{ maven_version }}
+    dest={{maven_install_dir}}/current
+  

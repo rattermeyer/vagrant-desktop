@@ -1,0 +1,22 @@
+# vim: noai:ts=4:sw=4:expandtab
+---
+# file dev
+- hosts: localhost
+  pre_tasks:
+    - file: path="{{home_base}}" state=directory mode=0755
+    - group: name=admin
+    - user: name="{{user}}" shell=/bin/bash password="{{password}}" groups=admin
+  roles:
+    - unity-customization
+    - dev-tools
+    - maven
+    - vim 
+    - nvm
+    - gvm
+    - intellij
+  vars:
+    user: "dev"
+    # password: pleasechange --> generate e.g. using mkpasswd --method=SHA-512
+    password: "$6$R/NgeKnN$Nlq.TC54GwBbH3oWhonjLDXeGMH56JpnpIvXLzHNHUfvl7/YK8.dxf6BaASaJJh1mWr20OuS9kMEexiLbZ9xQ/"
+    home_base: "/home"
+    home: "{{home_base}}/{{user}}"

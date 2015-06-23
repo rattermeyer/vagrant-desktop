@@ -1,0 +1,11 @@
+# vim: noai:ts=2:sw=2:expandtab
+---
+- name: Disable automatic login
+  lineinfile: dest=/etc/gdm/custom.conf regexp=^AutomaticLoginEnable= line=AutomaticLoginEnable=false
+
+- name: Keyboard configuration
+  debconf: name='keyboard-configuration' question={{item.question}} value={{item.value}} vtype={{item.vtype}}
+  with_items:
+    - { question: 'keyboard-configuration/variant', value: 'Deutsch', vtype: 'select' }
+    - { question: 'keyboard-configuration/layout', value: 'Deutsch', vtype: 'select' }
+    - { question: 'keyboard-configuration/layoutcode', value: 'de', vtype: 'select' }
