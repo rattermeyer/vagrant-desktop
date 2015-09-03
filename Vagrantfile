@@ -11,7 +11,7 @@ Vagrant.configure(2) do |config|
 
   # Every Vagrant development environment requires a box. You can search for
   # boxes at https://atlas.hashicorp.com/search.
-  config.vm.box = "boxcutter/ubuntu1404-desktop"
+  config.vm.box = "ubuntu/trusty64"
   if Vagrant.has_plugin?("vagrant-cachier")
     # Configure cached packages to be shared between instances of the same base box.
     # More info on http://fgrehm.viewdocs.io/vagrant-cachier/usage
@@ -21,7 +21,7 @@ Vagrant.configure(2) do |config|
   # Disable automatic box update checking. If you disable this, then
   # boxes will only be checked for updates when the user runs
   # `vagrant box outdated`. This is not recommended.
-  # config.vm.box_check_update = false
+  config.vm.box_check_update = false
 
   # Create a forwarded port mapping which allows access to a specific port
   # within the machine from a port on the host machine. In the example below,
@@ -30,7 +30,7 @@ Vagrant.configure(2) do |config|
 
   # Create a private network, which allows host-only access to the machine
   # using a specific IP.
-  # config.vm.network "private_network", ip: "192.168.33.10"
+  config.vm.network "private_network", type: "dhcp"
 
   # Create a public network, which generally matched to bridged network.
   # Bridged networks make the machine appear as another physical device on
@@ -51,8 +51,12 @@ Vagrant.configure(2) do |config|
     vb.gui = true
 
     # Customize the amount of memory on the VM:
-    vb.memory = "2048"
+    vb.memory = "4096"
+	vb.cpus = 4
+    vb.customize ["modifyvm", :id, "--accelerate3d", "on"]
+    vb.customize ["modifyvm", :id, "--draganddrop", "bidirectional"]
   end
+  
   #
   # View the documentation for the provider you are using for more
   # information on available options.
