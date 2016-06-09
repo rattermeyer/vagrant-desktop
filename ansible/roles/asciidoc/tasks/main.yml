@@ -1,0 +1,13 @@
+- name: Install ruby 2.2.3
+  shell: "{{home}}/.rvm/bin/rvm install 2.2.3"
+  become: true
+  become_user: "{{user}}"
+  tags: [asciidoctor]
+
+- name: Install Asciidoctor
+  shell: "{{home}}/.rvm/bin/rvm 2.2.3 do gem install guard guard-shell guard-livereload yajl-ruby asciidoctor"
+  args:
+    creates: "{{home}}/.rvm/gems/ruby-2.2.3/bin/asciidoctor"
+  become: true
+  become_user: "{{user}}"
+  tags: [asciidoctor]

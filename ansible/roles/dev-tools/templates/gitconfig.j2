@@ -1,0 +1,12 @@
+[user]
+	name = {{user_name}}
+	email = {{user_email}}
+[core]
+	editor = {{git_core_editor}}
+	autocrlf = {{git_core_autocrlf}} ; for development under windows and unix
+[color]
+	ui = true
+[merge]
+	tool = meld
+[credential]
+        helper = cache --timeout={{git_credential_cache_timeout}}

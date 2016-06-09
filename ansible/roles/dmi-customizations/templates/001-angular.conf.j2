@@ -1,0 +1,104 @@
+
+<VirtualHost *:8081> 
+ 
+  # Source files
+  Alias /development {{home}}/svn/dmi-parent/gui/src
+  # Dist file (used to test grunt build)
+  Alias /dist {{home}}/svn/dmi-parent/gui/dist
+    
+  # Development/pds
+  <Proxy balancer://development.pds>
+    BalancerMember http://127.0.0.1:8080
+  </Proxy>
+  ProxyPass /development/backend/pds balancer://development.pds/pds
+  ProxyPassReverse /development/backend/pds balancer://development.pds/pds
+  ProxyPass /development/backend/pds-dbmigrations balancer://dist.pds/pds-dbmigrations
+  ProxyPassReverse /development/backend/pds-dbmigrations balancer://dist.pds/pds-dbmigrations
+ 
+  
+  # Development/cus
+  <Proxy balancer://development.cus>
+    BalancerMember http://127.0.0.1:8080
+  </Proxy>
+  ProxyPass /development/backend/cus balancer://development.cus/cus
+  ProxyPassReverse /development/backend/cus balancer://development.cus/cus
+  ProxyPass /development/backend/cus-dbmigrations balancer://development.cus/cus-dbmigrations
+  ProxyPassReverse /development/backend/cus-dbmigrations balancer://development.cus/cus-dbmigrations
+   
+  # Development/ibs
+  <Proxy balancer://development.ibs>
+    BalancerMember http://127.0.0.1:8080
+  </Proxy>
+  ProxyPass /development/backend/ibs balancer://development.ibs/ibs
+  ProxyPassReverse /development/backend/ibs balancer://development.ibs/ibs
+   
+  # Development/cds
+  <Proxy balancer://development.cds>
+    BalancerMember http://127.0.0.1:8080
+  </Proxy>
+  ProxyPass /development/backend/cds balancer://development.cds/cds
+  ProxyPassReverse /development/backend/cds balancer://development.cds/cds
+    
+  # Development/pcs
+  <Proxy balancer://development.pcs>
+    BalancerMember http://127.0.0.1:8080
+  </Proxy>
+  ProxyPass /development/backend/pcs balancer://development.pcs/pcs
+  ProxyPassReverse /development/backend/pcs balancer://development.pcs/pcs
+   
+  # Development/camunda
+  <Proxy balancer://development.camunda>
+    BalancerMember http://127.0.0.1:8080
+  </Proxy>
+  ProxyPass /camunda balancer://development.camunda/camunda
+  ProxyPassReverse /camunda balancer://development.camunda/camunda
+
+  # Dist/pds
+  <Proxy balancer://dist.pds>
+    BalancerMember http://127.0.0.1:8080
+  </Proxy>
+  ProxyPass /dist/backend/pds balancer://dist.pds/pds
+  ProxyPassReverse /dist/backend/pds balancer://dist.pds/pds
+  ProxyPass /dist/backend/pds-dbmigrations balancer://dist.pds/pds-dbmigrations
+  ProxyPassReverse /dist/backend/pds-dbmigrations balancer://dist.pds/pds-dbmigrations
+ 
+  # Dist/cus
+  <Proxy balancer://dist.cus>
+    BalancerMember http://127.0.0.1:8080
+  </Proxy>
+  ProxyPass /dist/backend/cus balancer://dist.cus/cus   
+  ProxyPassReverse /dist/backend/cus balancer://dist.cus/cus
+  ProxyPass /dist/backend/cus-dbmigrations balancer://dist.cus/cus-dbmigrations
+  ProxyPassReverse /dist/backend/cus-dbmigrations balancer://dist.cus/cus-dbmigrations
+   
+  # Dist/ibs
+  <Proxy balancer://dist.ibs>
+    BalancerMember http://127.0.0.1:8080
+  </Proxy>
+  ProxyPass /dist/backend/ibs balancer://dist.ibs/ibs  
+  ProxyPassReverse /dist/backend/ibs balancer://dist.ibs/ibs
+   
+  # Dist/cds
+  <Proxy balancer://dist.cds>
+    BalancerMember http://127.0.0.1:8080
+  </Proxy>
+  ProxyPass /dist/backend/cds balancer://dist.cds/cds 
+  ProxyPassReverse /dist/backend/cds balancer://dist.cds/cds
+  
+  <Proxy *> 
+   Order deny,allow 
+   Allow from all 
+  </Proxy> 
+  
+  ErrorLog "/var/log/apache2/dummy-host2.essen.de.root.net-error.log"
+  CustomLog "/var/log/apache2/dummy-host2.essen.de.root.net-access.log" common
+    
+  <Directory "{{home}}/svn/dmi-parent/gui/">
+    Options FollowSymLinks
+    AllowOverride None
+#    Order allow,deny
+#    Allow from all
+    Require all granted
+  </Directory>
+  
+</VirtualHost>

@@ -1,0 +1,7 @@
+virtualbox:
+  guest_additions:
+    version: 5.0.29
+    iso_url: http://download.virtualbox.org/virtualbox/5.0.20/VBoxGuestAdditions_5.0.20.iso
+    iso_checksum: 6fbb59fd22e5f1b287a8a2b623604f0849b702a4ac737b57833f7cec006f01e6
+    iso_dir: /opt/download
+    iso_mountdir: /mnt

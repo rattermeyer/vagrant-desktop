@@ -1,0 +1,23 @@
+---
+- name: key
+  become: yes
+  become_user: "{{user}}"
+  shell: curl -sSL https://rvm.io/mpapis.asc | gpg --import -
+  tags: [rvm]
+
+- name: install rvm
+  become: yes
+  become_user: "{{user}}"
+  shell: curl -L https://get.rvm.io | bash -s stable --autolibs=enabled --ignore-dotfiles creates=~/.rvm
+  tags: [rvm]
+
+- name: build {{ruby}}
+  become: yes
+  become_user: "{{user}}"
+  shell: ~/.rvm/bin/rvm install {{ruby}}
+  when: ruby is defined
+  tags: [rvm]
+
+- name: source
+  lineinfile: dest={{home}}/.bashrc line='source ~/.rvm/scripts/rvm' insertbefore='#THIS MUST BE'
+  tags: [rvm]

@@ -1,0 +1,3 @@
+#!/bin/sh
+# Labels requires Docker 1.7, if you get an error remove them.
+docker run --rm --label=jekyll --volume=$(pwd):/srv/jekyll -t -p 127.0.0.1:4000:4000 jekyll/jekyll:pages

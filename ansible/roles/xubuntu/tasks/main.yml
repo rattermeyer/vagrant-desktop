@@ -1,0 +1,39 @@
+## vim: noai:ts=2:sw=2:expandtab
+---
+- name: ambiance theme repository
+  apt_repository: repo='ppa:ravefinity-project/ppa'
+  environment: "{{proxy_env}}"
+  tags: xubuntu
+- name: xfwm-theme-manager Repository
+  apt_repository: repo='ppa:rebuntu16/other-stuff'
+  tags: xubuntu
+- name: additional packages
+  apt: name="{{item}}"
+  with_items:
+    - xubuntu-desktop
+    - cairo-dock
+    - libreoffice-gtk
+    - xfce-theme-manager
+    - ambiance-flat-colors
+    - radiance-flat-colors
+    - xscreensaver
+  tags: xubuntu
+- name: remove packages
+  apt: name="{{item}}" state=absent
+  with_items:
+    - abiword
+    - light-locker
+  tags: xubuntu
+- name: Wallpaper
+  get_url: url=https://www.ppload.com/api/files/download?id=1460914629 dest=/usr/share/xfce4/backdrops/100418-3dbuntu3.jpg
+  environment: proxy_env
+  tags: configuration
+- name: xfce4 | configuration | ensure directory
+  file: path={{home}}/.config state=directory owner="{{user}}" group="{{user}}"
+  tags: xubuntu
+- name: xfce4 | copy config
+  unarchive: src=xfce4-config.tar.gz dest={{home}} owner="{{user}}" group="{{user}}"
+  tags: xubuntu
+#- name: Disable automatic login
+#  template: src=custom.conf.j2 dest="/etc/gdm/custom.conf" backup=yes mode=0644
+#  tags: configuration

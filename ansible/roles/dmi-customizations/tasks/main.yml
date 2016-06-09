@@ -1,0 +1,106 @@
+---
+- name: Install additional packages
+  apt: name={{ item }}
+  environment: proxy_env
+  with_items:
+    - subversion
+    - apache2
+    - mysql-server-5.5
+    - mysql-client-5.5
+    - mysql-workbench
+    - python-mysqldb
+  tags: [dmi]
+
+- name: Crate MySQL databases / schemas
+  mysql_db: name={{ item }} collation=utf8_general_ci
+  with_items:
+    - "{{ user }}_pds"
+    - "{{ user }}_cus"
+    - "{{ user }}_cds"
+    - "{{ user }}_ibs"
+    - "{{ user }}_mdr"
+    - "{{ user }}_pcs"
+    - "{{ user }}_cam"
+    - "{{ user }}_schd"
+  tags: [dmi]
+
+- name: Create database user
+  mysql_user: name={{ user }} password={{ user }} priv={{user}}_%.*:ALL state=present
+  tags: [dmi]
+
+- name: Create directories
+  file: path={{home}}/svn state=directory
+  become: true
+  become_user: "{{user}}"
+  tags: [dmi]
+
+- name: Checkout Infrastructure
+  stat: path={{home}}/svn/infrastructure 
+  register: st
+- subversion: repo=http://10.49.103.64/repos/DMI/infrastructure/trunk dest={{home}}/svn/infrastructure username={{user}} password={{user_domain_password}}
+  become: true
+  become_user: "{{user}}"
+  when: svn_perform_checkout == true and st.stat.isdir is defined and st.stat.isdir == False
+  tags: [dmi]
+
+# the next currently fails with some weird UTF-8 to native (which should be UTF-8) encoding issue
+#- name: Checkout Project
+#  subversion: repo=http://10.49.103.64/repos/DMI/dmi-parent/trunk dest={{home}}/svn/dmi-parent username={{user}} password={{user_domain_password}}
+#  become: true
+#  become_user: "{{user}}"
+#  when: svn_perform_checkout == true
+#  tags: [dmi]
+
+- name: Enable Proxy modules 
+  apache2_module: name={{item}}
+  with_items:
+    - proxy
+    - proxy_http
+    - proxy_balancer
+    - slotmem_shm
+    - lbmethod_byrequests
+  tags: [dmi]
+- name: Install Angular2 configuration
+  template: src=001-angular.conf.j2 dest=/etc/apache2/sites-available/001-angular.conf mode=0644
+  tags: [dmi]
+- name: enable angular site
+  command: a2ensite 001-angular.conf
+  args:
+    creates: /etc/apache2/sites-enabled/001-angular.conf
+  notify:
+    - restart apache2
+  tags: [dmi]
+
+- name: Setup maven configuration
+  file: path={{home}}/.m2 state=directory
+  become: true
+  become_user: "{{user}}"
+  tags: [dmi]
+
+- template: src=settings.xml.j2 dest={{home}}/.m2/settings.xml
+  become: true
+  become_user: "{{user}}"
+  tags: [dmi]
+
+- name: Customize Wildfly
+  replace: dest=/home/attermri/svn/infrastructure/files/wildfly-images/wildfly-8.1.0.Final/standalone/configuration/standalone.xml regexp={{item.regexp}} replace={{item.replace}}
+  with_items:
+    - { regexp: '_dev',    replace: '' }
+    - { regexp: 'dmi_dbt', replace: "{{user}}" }
+    - { regexp: ">{{user}}_.*?<", replace: ">{{user}}<" }
+    - { regexp: "dmistmysql", replace: 'localhost' }
+  become: true
+  become_user: "{{user}}"
+  tags: [dmi]
+#- replace: dest=/home/attermri/svn/infrastructure/files/wildfly-images/wildfly-8.1.0.Final/standalone/configuration/standalone.xml regexp='dmi_dbt' replace="{{user}}"
+#  become: true
+#  become_user: "{{user}}"
+#  tags: [dmi]
+#- replace: dest=/home/attermri/svn/infrastructure/files/wildfly-images/wildfly-8.1.0.Final/standalone/configuration/standalone.xml regexp=">{{user}}_.*?<" replace=">{{user}}<"
+#  become: true
+#  become_user: "{{user}}"
+#  tags: [dmi]
+#- replace: dest=/home/attermri/svn/infrastructure/files/wildfly-images/wildfly-8.1.0.Final/standalone/configuration/standalone.xml regexp="dmistmysql" replace="localhost"
+#  become: true
+#  become_user: "{{user}}"
+#  tags: [dmi]

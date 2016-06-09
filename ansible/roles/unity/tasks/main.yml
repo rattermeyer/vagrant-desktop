@@ -1,0 +1,7 @@
+## vim: noai:ts=2:sw=2:expandtab
+---
+- name: Install ubuntu Desktop
+  apt: name=ubuntu-desktop
+#- name: Disable automatic login
+#  template: src=custom.conf.j2 dest="/etc/gdm/custom.conf" backup=yes mode=0644
+#  tags: configuration

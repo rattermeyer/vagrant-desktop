@@ -1,0 +1,23 @@
+---
+# tasks file for gvm
+# vim: noai:ts=2:sw=2:expandtab
+- name: GVM | Ensure preconditions
+  apt: name=unzip
+- name: GVM | Install gvm
+  get_url: url="https://get.sdkman.io" dest="{{home}}/install.sh" validate_certs=false
+  become: yes
+  become_user: "{{ user }}"
+
+- file: path="{{home}}/install.sh" mode=u+rxw
+  become: yes
+  become_user: "{{ user }}"
+
+- shell: "{{home}}/install.sh"
+  args:
+    creates: "{{ home }}/.gvm"
+  become: yes
+  become_user: "{{ user }}"
+
+- file: path="{{home}}/install.sh" mode=u+rxw state=absent
+  become: yes
+  become_user: "{{ user }}"

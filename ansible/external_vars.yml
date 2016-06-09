@@ -1,0 +1,9 @@
+user: richard
+password: "$6$efu4PmVTav$O9zDXWh02A4NpQwUns.DRP3meG.czhNKJY1QTPn1Gnqg3df245UMxwsR/2xcsdyxs.aETQsxwUzP490juck.8."
+use_mirror: False
+use_apt_proxy: False
+remove_apt_proxy: False
+proxy_env:
+  apt_proxy: http://192.168.33.254:3142
+  http_proxy: http://192.168.33.254:3128
+

@@ -1,0 +1,21 @@
+---
+# tasks file for nvm
+# vim: noai:ts=2:sw=2:expandtab
+- name: Install nvm
+  get_url: url="https://raw.githubusercontent.com/creationix/nvm/{{nvm_version}}/install.sh" dest="{{home}}/install.sh"
+  become: yes
+  become_user: "{{ user }}"
+
+- file: path="{{home}}/install.sh" mode=u+rxw
+  become: yes
+  become_user: "{{ user }}"
+
+- shell: "{{home}}/install.sh"
+  args:
+    creates: "{{ home }}/.nvm"
+  become: yes
+  become_user: "{{ user }}"
+
+- file: path="{{home}}/install.sh" mode=u+rxw state=absent
+  become: yes
+  become_user: "{{ user }}"

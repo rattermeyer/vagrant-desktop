@@ -12,11 +12,6 @@ Vagrant.configure(2) do |config|
   # Every Vagrant development environment requires a box. You can search for
   # boxes at https://atlas.hashicorp.com/search.
   config.vm.box = "ubuntu/trusty64"
-  if Vagrant.has_plugin?("vagrant-cachier")
-    # Configure cached packages to be shared between instances of the same base box.
-    # More info on http://fgrehm.viewdocs.io/vagrant-cachier/usage
-    config.cache.scope = :box
-  end
 
   # Disable automatic box update checking. If you disable this, then
   # boxes will only be checked for updates when the user runs
@@ -47,16 +42,20 @@ Vagrant.configure(2) do |config|
   # Example for VirtualBox:
   #
   config.vm.provider "virtualbox" do |vb|
+    vb.name= "desktop-dev"
     # Display the VirtualBox GUI when booting the machine
     vb.gui = true
 
     # Customize the amount of memory on the VM:
     vb.memory = "4096"
-	vb.cpus = 4
+	  vb.cpus = 4
     vb.customize ["modifyvm", :id, "--accelerate3d", "on"]
     vb.customize ["modifyvm", :id, "--draganddrop", "bidirectional"]
+    vb.customize ["modifyvm", :id, "--vram", "256"]
+    vb.customize ["modifyvm", :id, "--audio", "alsa"]
+    vb.customize ["modifyvm", :id, "--audiocontroller", "ac97"]
   end
-  
+
   #
   # View the documentation for the provider you are using for more
   # information on available options.
@@ -77,7 +76,6 @@ Vagrant.configure(2) do |config|
   # SHELL
   config.vm.provision "shell", path: "scripts/update.sh"
   config.vm.provision "shell", path: "scripts/additional-packages.sh"
-  config.vm.provision "shell", path: "scripts/docker.sh"
   config.vm.provision "shell", path: "scripts/ansible.sh"
   config.vm.provision "shell", path: "scripts/provision.sh"
 end

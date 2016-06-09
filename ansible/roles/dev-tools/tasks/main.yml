@@ -1,0 +1,51 @@
+# vim: noai:ts=2:sw=2:expandtab
+---
+- name: add openjdk repository
+  apt_repository: repo='ppa:openjdk-r/ppa'
+  tags: dev-tools
+- name: add several packages
+  apt: name={{ item }} state=present
+  with_items:
+    - git
+    - git-svn
+    - gitk
+    - tig
+    - meld
+    - vim
+    - tmux
+    - openjdk-7-jdk
+    - openjdk-8-jdk
+  tags: dev-tools
+- name: update alternatives
+  alternatives: name={{ item.name }} path={{ item.path }}
+  with_items:
+    - { name: 'java',    path: '/usr/lib/jvm/java-8-openjdk-amd64/bin/java' }
+    - { name: 'javac',   path: '/usr/lib/jvm/java-8-openjdk-amd64/bin/javac' }
+    - { name: 'javadoc', path: '/usr/lib/jvm/java-8-openjdk-amd64/bin/javadoc' }
+    - { name: 'javah',   path: '/usr/lib/jvm/java-8-openjdk-amd64/bin/javah' }
+    - { name: 'javap',   path: '/usr/lib/jvm/java-8-openjdk-amd64/bin/javap' }
+  tags: dev-tools
+
+- name: install git prompt
+  git: repo=https://github.com/magicmonty/bash-git-prompt.git dest={{home}}/.bash-git-prompt
+  environment: proxy_env
+  become: true
+  become_user: "{{user}}"
+  tags: dev-tools
+- lineinfile: dest={{home}}/.bashrc line='GIT_PROMPT_ONLY_IN_REPO=1' insertafter=EOF
+  become: true
+  become_user: "{{user}}"
+  tags: dev-tools
+- lineinfile: dest={{home}}/.bashrc line='GIT_PROMPT_THEME=Solarized' insertafter=EOF
+  become: true
+  become_user: "{{user}}"
+  tags: dev-tools
+- lineinfile: dest={{home}}/.bashrc line='source ~/.bash-git-prompt/gitprompt.sh' insertafter=EOF
+  become: true
+  become_user: "{{user}}"
+  tags: dev-tools
+- name: Git configuration
+  template: src=gitconfig.j2 dest="{{home}}/.gitconfig" owner="{{user}}" group="{{user}}" mode=0664
+  tags:
+  - configuration
+  - dev-tools

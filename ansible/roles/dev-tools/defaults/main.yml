@@ -1,0 +1,4 @@
+ubuntu_release: trusty
+git_core_editor: vim
+git_credential_cache_timeout: 60
+git_core_autocrlf: input
