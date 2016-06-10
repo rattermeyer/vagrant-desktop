@@ -50,7 +50,7 @@
     - {role: gvm, when: '"gvm" in roles_included' }
     - {role: intellij, when: '"intellij" in roles_included' }
     - {role: rvm, when: '"rvm" in roles_included' }
-    - {role: asciidoc, when: '"asciidoc" in roles_included' }
+    - {role: asciidoc, when: '"asciidoc" in roles_included', tags: ['asciidoctor'] }
   post_tasks:
     - name: remove apt-proxy
       file: dest="{{apt_proxy_conf}}" state=absent
