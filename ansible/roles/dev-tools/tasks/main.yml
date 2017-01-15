@@ -13,7 +13,6 @@
     - meld
     - vim
     - tmux
-    - openjdk-7-jdk
     - openjdk-8-jdk
   tags: dev-tools
 - name: update alternatives
