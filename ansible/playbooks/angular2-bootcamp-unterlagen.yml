@@ -1,0 +1,23 @@
+---
+- hosts: localhost
+  tasks:
+  - name: "create directories"
+    become: True
+    become_user: "{{user_account}}"
+    file:
+      path: "/home/{{user_account}}/git"
+      state: directory
+      owner: "{{user_account}}"
+      group: "{{user_account}}"
+
+  - name: "clone kursunterlagen"
+    become: True
+    become_user: "{{user_account}}"
+    git:
+      repo: ssh://git@git.opitz-consulting.de:7999/cmc/angular2kurs.git
+      dest: "/home/{{user_account}}/git/angular2kurs"
+      accept_hostkey: True
+      key_file: "/home/{{user_account}}/.ssh/id_rsa"
+  vars_files:
+    - ../default.yml
+    - ../customization.yml

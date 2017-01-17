@@ -1,0 +1,9 @@
+---
+#- src: rattermeyer.git
+#  version: v0.3
+
+- src: cmprescott.chrome
+  version: 0.2.2
+
+- src: PeterMosmans.virtualbox-guest
+  version: v1.4

@@ -1,0 +1,40 @@
+# vim: noai:ts=4:sw=4:expandtab
+---
+- include: playbooks/apt-mirror.yml
+  when: apt_mirror is defined and apt_mirror == True
+
+- include: playbooks/user.yml
+
+- hosts: localhost
+  roles:
+  - role: unity
+    become: True
+    when: desktop == 'unity'
+  - role: rattermeyer.git
+    git:
+      user:
+        name: "{{ user_name }}"
+        email: "{{ user_email }}"
+        account: "{{ user_account}}"
+    gui_enabled: True
+
+  - role: cmprescott.chrome
+    become: True
+
+  - role: nvm
+    nvm_version: v0.33.0
+    nvm_npm_global_packages:
+    - angular-cli
+    tags:
+    - nvm
+
+  - role: PeterMosmans.virtualbox-guest
+    virtualbox_x11: True
+    virtualbox_version: 5.1.12
+    tags:
+    - vbox-guest
+  vars_files:
+    - default.yml
+    - customization.yml
+
+- include: playbooks/angular2-bootcamp-unterlagen.yml

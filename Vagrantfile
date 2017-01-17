@@ -11,7 +11,7 @@ Vagrant.configure(2) do |config|
 
   # Every Vagrant development environment requires a box. You can search for
   # boxes at https://atlas.hashicorp.com/search.
-  config.vm.box = "geerlingguy/ubuntu1604"
+  config.vm.box = "box-cutter/ubuntu1604-desktop"
 
   # Disable automatic box update checking. If you disable this, then
   # boxes will only be checked for updates when the user runs
@@ -75,8 +75,6 @@ Vagrant.configure(2) do |config|
   #   sudo apt-get update
   #   sudo apt-get install -y apache2
   # SHELL
-  config.vm.provision "shell", path: "scripts/update.sh"
-  config.vm.provision "shell", path: "scripts/additional-packages.sh"
   config.vm.provision "shell", path: "scripts/ansible.sh"
   config.vm.provision "shell", path: "scripts/provision.sh"
 end

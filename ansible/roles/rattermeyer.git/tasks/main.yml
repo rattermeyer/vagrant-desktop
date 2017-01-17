@@ -28,10 +28,12 @@
 - name: Install packages (non x11)
   apt: name="{{item}}"
   with_items: "{{packages_nonx11}}"
+  become: True
 
 - name: Install packages (x11)
   apt: name="{{item}}"
   with_items: "{{packages_x11}}"
+  become: True
   when: gui_enabled is defined and gui_enabled == True
 
 - name: register installed git version
@@ -43,6 +45,7 @@
   get_url:
     dest: /etc/bash_completion.d/git-completion
     url: "https://raw.githubusercontent.com/git/git/v{{git_version.stdout}}/contrib/completion/git-completion.bash"
+  become: True
 
 - block:
     - name: install git prompt

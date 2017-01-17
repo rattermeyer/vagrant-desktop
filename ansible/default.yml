@@ -1,0 +1,5 @@
+apt_mirror: True
+apt_mirror_line: mirror://mirrors.ubuntu.com/mirrors.txt
+use_apt_proxy: False
+nodejs_npm_global_packages:
+  - angular-cli
