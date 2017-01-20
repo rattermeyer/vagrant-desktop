@@ -5,5 +5,5 @@
 - src: cmprescott.chrome
   version: 0.2.2
 
-- src: PeterMosmans.virtualbox-guest
-  version: v1.4
+- src: rattermeyer.virtualbox-guest
+  version: v0.1

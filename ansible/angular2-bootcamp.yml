@@ -7,16 +7,10 @@
 
 - hosts: localhost
   roles:
-  - role: unity
+  - role: xubuntu
+    xubuntu_user: "{{ user_account }}"
     become: True
-    when: desktop == 'unity'
-  - role: rattermeyer.git
-    git:
-      user:
-        name: "{{ user_name }}"
-        email: "{{ user_email }}"
-        account: "{{ user_account}}"
-    gui_enabled: True
+    when: desktop == 'xubuntu'
 
   - role: cmprescott.chrome
     become: True
@@ -28,11 +22,30 @@
     tags:
     - nvm
 
-  - role: PeterMosmans.virtualbox-guest
-    virtualbox_x11: True
-    virtualbox_version: 5.1.12
-    tags:
-    - vbox-guest
+#  - role: rattermeyer.virtualbox-guest
+#    become: True
+#    virtualbox_guest_version: 5.1.12
+#    virtualbox_x11: True
+#    virtualbox_guest_iso_checksum: sha256:13a0265cab971ac3e31e83959a68e377c7f014f429fa3a168c86fb2399df4321
+#    tags:
+#    - vbox-guest
+
+  # TODO use get_url instead shell
+  # TODO update version and build
+  - role: intellij
+    version: 2016.1.3
+    build: 145.1617.8
+
+  - role: rattermeyer.git
+    git:
+      user:
+        name: "{{ user_name }}"
+        email: "{{ user_email }}"
+        account: "{{ user_account}}"
+    gui_enabled: True
+
+
+
   vars_files:
     - default.yml
     - customization.yml
