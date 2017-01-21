@@ -33,8 +33,10 @@
   # TODO use get_url instead shell
   # TODO update version and build
   - role: intellij
-    version: 2016.1.3
-    build: 145.1617.8
+    intellij_user: "{{ user_account }}" 
+    become: True
+    version: 2016.3.3
+    build: 163.11103.6
 
   - role: rattermeyer.git
     git:
@@ -44,6 +46,8 @@
         account: "{{ user_account}}"
     gui_enabled: True
 
+  tasks:
+  - include: tasks/keyboard.yml
 
 
   vars_files:

@@ -1,0 +1,4 @@
+- replace:
+    dest: /etc/default/keyboard
+    regexp: 'XKBLAYOUT=".*"'
+    replace: 'XKBLAYOUT="de"'

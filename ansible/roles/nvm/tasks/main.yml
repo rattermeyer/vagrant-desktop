@@ -25,12 +25,22 @@
   become: yes
   become_user: "{{ user_account }}"
 
+- name: "check node version"
+  shell: "NVM_DIR=/home/{{user_account}}/.nvm && . ${NVM_DIR}/nvm.sh && nvm ls node {{nvm_node_version}}"
+  args:
+    chdir: "/home/{{ user_account }}"
+  become: yes
+  become_user: "{{ user_account }}"
+  register: node_version
+  changed_when: false
+
 - name: "install node"
   shell: "NVM_DIR=/home/{{user_account}}/.nvm && . ${NVM_DIR}/nvm.sh && nvm install {{nvm_node_version}} && nvm use {{nvm_node_version}}"
   args:
     chdir: "/home/{{ user_account }}"
   become: yes
   become_user: "{{ user_account }}"
+  when: node_version.stdout.find("{{nvm_node_version}}") == -1
 
 - name: "install node global libraries"
   shell: "NVM_DIR=/home/{{user_account}}/.nvm && . ${NVM_DIR}/nvm.sh && nvm use {{nvm_node_version}} && npm install -g {{item}}"
