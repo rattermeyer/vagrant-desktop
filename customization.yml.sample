@@ -1,0 +1,35 @@
+# user account to login
+user_account: richard
+
+# user name, will be used for git commit messages
+user_name: "Richard Attermeyer"
+
+# user email, will be used for git commit messages
+user_email: "richard.attermeyer@opitz-consulting.com"
+
+# if you have an existing ssh key, you can provide it here.
+# if not, one ssh key will be generated.
+# remember: If you store the customization in a git repo, probably use
+# ansible-vault to encrypt this file
+user_ssh_key: |
+  -----BEGIN RSA PRIVATE KEY-----
+  <Your private Key>
+  -----END RSA PRIVATE KEY-----
+
+# password: pleasechange --> generate e.g. using mkpasswd --method=SHA-512
+# the initial login password is "pleasechange"
+# you should directly change the password on first login
+user_password: "$6$MMmJu7FDuTdfD$7DPLop1J4SwEwGAeWDTSXKXm9qxPVHqS3gEPR0blaTZAUnXQJjHMmbSFNlD1unSiA08ZjKeF0dVzhTA3zc6CF."
+
+apt_mirror: True
+
+# Desktop: xubuntu has been tested
+desktop: xubuntu
+
+use_apt_proxy: False
+remove_apt_proxy: False
+# Proxy settings, if you use apt proxy
+#proxy_env:
+#  apt_proxy: http://192.168.33.254:3142
+#  http_proxy: http://192.168.33.254:3128
+#
