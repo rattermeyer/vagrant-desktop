@@ -1,0 +1,58 @@
+# vim: noai:ts=4:sw=4:expandtab
+---
+- include: playbooks/apt-mirror.yml
+  when: apt_mirror is defined and apt_mirror == True
+
+- include: playbooks/user.yml
+
+- hosts: localhost
+  roles:
+  - role: xubuntu
+    xubuntu_user: "{{ user_account }}"
+    become: True
+    when: desktop == 'xubuntu'
+
+  - role: cmprescott.chrome
+    become: True
+
+  - role: nvm
+    nvm_version: v0.33.0
+    nvm_npm_global_packages:
+    - angular-cli
+    tags:
+    - nvm
+
+#  - role: rattermeyer.virtualbox-guest
+#    become: True
+#    virtualbox_guest_version: 5.1.12
+#    virtualbox_x11: True
+#    virtualbox_guest_iso_checksum: sha256:13a0265cab971ac3e31e83959a68e377c7f014f429fa3a168c86fb2399df4321
+#    tags:
+#    - vbox-guest
+
+  # TODO use get_url instead shell
+  # TODO update version and build
+  - role: intellij
+    intellij_user: "{{ user_account }}"
+    become: True
+    version: 2016.3.3
+    build: 163.11103.6
+
+  - role: rattermeyer.git
+    git:
+      user:
+        name: "{{ user_name }}"
+        email: "{{ user_email }}"
+        account: "{{ user_account}}"
+    gui_enabled: True
+    git_install_prompt: False
+
+  tasks:
+  - include: tasks/keyboard.yml
+
+
+  vars_files:
+    - default.yml
+    - customization.yml
+
+- include: playbooks/angular2-bootcamp-unterlagen.yml

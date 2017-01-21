@@ -1,21 +1,52 @@
 ---
 # tasks file for nvm
 # vim: noai:ts=2:sw=2:expandtab
-- name: Install nvm
-  get_url: url="https://raw.githubusercontent.com/creationix/nvm/{{nvm_version}}/install.sh" dest="{{home}}/install.sh"
-  become: yes
-  become_user: "{{ user }}"
+- name: Ensure required packages are present
+  apt:
+    name: "{{ item }}"
+  with_items:
+  - build-essential
+  - libssl-dev
+  become: True
 
-- file: path="{{home}}/install.sh" mode=u+rxw
-  become: yes
-  become_user: "{{ user }}"
+- name: download nvm
+  get_url:
+    url: "https://raw.githubusercontent.com/creationix/nvm/{{nvm_version}}/install.sh"
+    dest: "/home/{{ user_account }}/install.sh"
+    owner: "{{ user_account }}"
+    group: "{{ user_account }}"
+    mode: 0755
+  become: True
 
-- shell: "{{home}}/install.sh"
+- name: "install nvm"
+  shell: "/home/{{ user_account }}/install.sh"
   args:
-    creates: "{{ home }}/.nvm"
+    creates: "/home/{{ user_account }}/.nvm"
   become: yes
-  become_user: "{{ user }}"
+  become_user: "{{ user_account }}"
 
-- file: path="{{home}}/install.sh" mode=u+rxw state=absent
+- name: "check node version"
+  shell: "NVM_DIR=/home/{{user_account}}/.nvm && . ${NVM_DIR}/nvm.sh && nvm ls node {{nvm_node_version}}"
+  args:
+    chdir: "/home/{{ user_account }}"
   become: yes
-  become_user: "{{ user }}"
+  become_user: "{{ user_account }}"
+  register: node_version
+  changed_when: False
+  ignore_errors: True
+
+- name: "install node"
+  shell: "NVM_DIR=/home/{{user_account}}/.nvm && . ${NVM_DIR}/nvm.sh && nvm install {{nvm_node_version}} && nvm use {{nvm_node_version}}"
+  args:
+    chdir: "/home/{{ user_account }}"
+  become: yes
+  become_user: "{{ user_account }}"
+  when: node_version|failed or node_version.stdout.find("{{nvm_node_version}}") == -1
+
+- name: "install node global libraries"
+  shell: "NVM_DIR=/home/{{user_account}}/.nvm && . ${NVM_DIR}/nvm.sh && nvm use {{nvm_node_version}} && npm install -g {{item}}"
+  args:
+    chdir: "/home/{{ user_account }}"
+  with_items: "{{nodejs_npm_global_packages}}"
+  become: yes
+  become_user: "{{ user_account }}"

@@ -1,0 +1,11 @@
+---
+# this version determines the version of the guest additions that will be installed
+virtualbox_guest_version: 5.1.14
+# the checksum of the iso fil
+virtualbox_guest_iso_checksum: "sha256:1b206b76050dccd3ed979307230f9ddea79551e1c0aba93faee77416733cdc8a"
+# specifiy where the downloaded iso file will be placed
+virtualbox_guest_iso_download_path: "/opt"
+# mount path where iso will mounted
+virtualbox_guest_iso_mount_path: /mnt/virtualbox
+# easier path based on above variables
+virtualbox_guest_iso_path: "{{virtualbox_guest_iso_download_path}}/VBoxGuestAdditions_{{virtualbox_guest_version}}.iso"

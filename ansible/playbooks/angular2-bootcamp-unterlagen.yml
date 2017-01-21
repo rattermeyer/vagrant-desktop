@@ -1,0 +1,46 @@
+---
+- hosts: localhost
+  tasks:
+  - name: "create directories"
+    become: True
+    become_user: "{{user_account}}"
+    file:
+      path: "/home/{{user_account}}/git"
+      state: directory
+      owner: "{{user_account}}"
+      group: "{{user_account}}"
+
+  - name: "copy ssh keys"
+    become: True
+    become_user: "{{user_account}}"
+    copy:
+      src: "known_hosts"
+      dest: /home/{{user_account}}/.ssh/known_hosts
+      mode: 0644
+
+  - name: "add git config"
+    become: True
+    become_user: "{{user_account}}"
+    blockinfile:
+      block: |
+        Host git.opitz-consulting.de
+          HostName git.opitz-consulting.de
+          Port 7999
+          User git
+          IdentityFile ~/.ssh/id_rsa
+      dest: /home/{{user_account}}/.ssh/config
+      mode: 0644
+      create: True
+
+  - name: "clone kursunterlagen"
+    become: True
+    become_user: "{{user_account}}"
+    git:
+      repo: git.opitz-consulting.de:/cmc/angular2kurs.git
+      dest: "/home/{{user_account}}/git/angular2kurs"
+      accept_hostkey: yes
+      key_file: "/home/{{user_account}}/.ssh/id_rsa"
+
+  vars_files:
+    - ../default.yml
+    - ../customization.yml
