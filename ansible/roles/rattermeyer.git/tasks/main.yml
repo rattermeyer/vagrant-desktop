@@ -56,6 +56,11 @@
       lineinfile: dest={{home}}/.bashrc line='GIT_PROMPT_THEME="{{git_bash_prompt_theme}}"' insertafter=EOF
     - name: Source git bash prompt
       lineinfile: dest={{home}}/.bashrc line='source ~/.bash-git-prompt/gitprompt.sh' insertafter=EOF
+  when: git_install_prompt
+  become: true
+  become_user: "{{git.user.account}}"
+
+- block:
     - name: Git configuration (template)
       template: src=gitconfig.j2 dest="{{home}}/.gitconfig" owner="{{git.user.account}}" group="{{git.user.account}}" mode=0664
       when: config is not defined

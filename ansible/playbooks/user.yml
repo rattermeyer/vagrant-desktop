@@ -13,6 +13,7 @@
       shell: /bin/bash
       password: "{{ user_password }}"
       generate_ssh_key: "{{ user_ssh_key is undefined }}"
+      groups: sudo
   - block:
     - name: "create ssh directory"
       file:

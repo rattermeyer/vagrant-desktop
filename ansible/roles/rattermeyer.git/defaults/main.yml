@@ -3,6 +3,7 @@
 home: "/home/{{git.user.account}}"
 git_bash_prompt_version: "2.5.1"
 git_bash_prompt_theme: Solarized
+git_install_prompt: True
 packages_nonx11:
   - git
   - tig
@@ -11,6 +12,7 @@ packages_nonx11:
 packages_x11:
   - gitk
   - meld
+  - ttf-dejavu
 gui_enabled: true
 git_default:
   core:

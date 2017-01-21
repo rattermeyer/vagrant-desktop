@@ -33,7 +33,7 @@
   # TODO use get_url instead shell
   # TODO update version and build
   - role: intellij
-    intellij_user: "{{ user_account }}" 
+    intellij_user: "{{ user_account }}"
     become: True
     version: 2016.3.3
     build: 163.11103.6
@@ -45,6 +45,7 @@
         email: "{{ user_email }}"
         account: "{{ user_account}}"
     gui_enabled: True
+    git_install_prompt: False
 
   tasks:
   - include: tasks/keyboard.yml

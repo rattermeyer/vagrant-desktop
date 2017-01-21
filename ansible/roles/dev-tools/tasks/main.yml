@@ -14,6 +14,7 @@
     - vim
     - tmux
     - openjdk-8-jdk
+    - ttf-dejavu
   tags: dev-tools
 - name: update alternatives
   alternatives: name={{ item.name }} path={{ item.path }}
