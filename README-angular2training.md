@@ -14,6 +14,10 @@ Wenn du zufrieden bist, dann starte die Box mittels
 
 `vagrant up`
 
+Wenn das durch ist noch einmal
+
+`vagrant reload`
+
 ## Ergebnis + Nacharbeiten
 
 Du bekommst eine Xubuntu basierte Box mit deinem User (siehe `customization.yml`) eingerichtet.
@@ -31,6 +35,4 @@ Installiert sind
 Das Keyboard ist auf deutsch, allerdings wurden keine weiteren Language Einstellungen vorgenommen.
 Achtung: Es wurde nicht überprüft ob die Shortcuts vom Desktop Environment und IntelliJ sich nicht "beißen". Wenn ihr eine Einstellung habt, die ihr gut findet, dann könnt ihr sie mir gerne schicken. Für xfce findet ihr die unter `.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-keyboard-shortcuts.xml`.
 
-## Known Issues
-
-Ich hatte Probleme mit der aktuellen Virtualbox Gast Erweiterung. Vagrant up funktionierte danach nicher mehr. Trotzdem bitte ausprobieren und mir Bescheid geben
+Bitte installiert ggf. die aktualisierte Version der VirtualBox Guest Extensions.
