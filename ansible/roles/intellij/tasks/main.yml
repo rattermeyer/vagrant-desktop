@@ -1,39 +1,65 @@
 # vim: noai:ts=2:sw=2:expandtab
 ---
 - name: check if intellij is present
-  stat: path=/opt/intellij-{{version}}.tar.gz
+  stat:
+    path: /opt/intellij-{{version}}.tar.gz
   register: st
-  tags:
-    - intellij
+
+- name: check if intellij has been unpacked
+  stat:
+    path: /opt/intellij/idea-IU-{{build}}
+  register: st_unpacked
 
 - block:
   - name: Install Java 1.8
-    apt: name=openjdk-8-jdk state=present
+    apt:
+      name: openjdk-8-jdk
+      state: present
 
   # should work with get_url, but I have problems?
   - name: Download
-  #  get_url: url=http://download-cf.jetbrains.com/idea/ideaIU-{{version}}.tar.gz dest=/opt/intellij-{{version}}.tar.gz
-    shell: curl -L -v --progress-bar http://download.jetbrains.com/idea/ideaIU-{{version}}.tar.gz >   /opt/intellij-{{version}}.tar.gz
-    args:
-      creates: /opt/intellij-{{version}}.tar.gz
+    get_url:
+      url: http://download-cf.jetbrains.com/idea/ideaIU-{{version}}.tar.gz
+      dest: /opt/intellij-{{version}}.tar.gz
+    when: st.stat.exists == false
+  #  shell: curl -L -v --progress-bar http://download.jetbrains.com/idea/ideaIU-{{version}}.tar.gz >   /opt/intellij-{{version}}.tar.gz
+  #  args:
+  #    creates: /opt/intellij-{{version}}.tar.gz
 
   - name: Create intellij directory
-    command: mkdir /opt/intellij creates=/opt/intellij
+    file:
+      path: /opt/intellij
+      state: directory
 
-  - name: Remove current link
-    command: rm -rf /opt/intellij/current
 
   - name: Extract archive
-    command: /bin/tar xvf /opt/intellij-{{version}}.tar.gz -C /opt/intellij creates=/opt/intellij/idea-IU-{{build}}
+    unarchive:
+     dest: /opt/intellij
+     src: /opt/intellij-{{version}}.tar.gz
+     remote_src: True
+     creates: /opt/intellij/idea-IU-{{build}}
 
-  - name: Create symlink
-    command: chdir=/opt/intellij ln -s idea-IU-{{build}} current
+  - name: Remove current link
+    file:
+      path: /opt/intellij/current
+      src: /opt/intellij/idea-IU-{{build}}
+      state: link
 
   - name: Change ownership of IntelliJ installation
-    file: path=/opt/intellij owner={{ intellij_user }} group={{ intellij_user }} state=directory recurse=yes
+    file:
+      path: /opt/intellij
+      owner: "{{ intellij_user }}"
+      group: "{{ intellij_user }}"
+      state: directory
+      recurse: yes
+
+  - name: Create symlink
+    file:
+      path: /usr/local/bin/idea
+      src: /opt/intellij/current/bin/idea.sh
+      state: link
+      mode: 0755
 
   - name: Copy unity desktop file
     template: src=intellij.j2 dest=/usr/share/applications/intellij.desktop
-  when: st.stat.exists == false
-  tags:
-    - intellij
+  when: st_unpacked.stat.exists == false

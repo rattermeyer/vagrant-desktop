@@ -6,6 +6,7 @@
 - include: playbooks/user.yml
 
 - hosts: localhost
+
   roles:
   - role: xubuntu
     xubuntu_user: "{{ user_account }}"
