@@ -48,6 +48,12 @@
     gui_enabled: True
     git_install_prompt: False
 
+  - role: rattermeyer.vim
+    become: True
+    user: "{{ user_account }}"
+    vundle_packages: "{{ vundle_packages_essential + vundle_packages_ui + vundle_packages_gui + vundle_packages_languages }}"
+    when: vim_install == True
+
   tasks:
   - include: tasks/keyboard.yml
 
@@ -57,3 +63,4 @@
     - customization.yml
 
 - include: playbooks/angular2-bootcamp-unterlagen.yml
+  when: atom_install == True

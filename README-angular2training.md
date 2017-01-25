@@ -29,11 +29,46 @@ Installiert sind
 * node 6.9.4
 * angular-cli
 * Kursunterlagen gecloned nach git/angular2kurs
-* meld als Mergetool
+* [meld](http://meldmerge.org/) als Mergetool
 * Nützliche git aliases
-* [tig](https://jonas.github.io/tig/) als ncurses basiertes git frontend 
+* [tig](https://jonas.github.io/tig/) als ncurses basiertes git frontend, allerdings ist die git Integration in IntelliJ sehr gut. Für denjenigen, der trotzdem einen exteren grafischen git client hat, habe ich
+* [giteye](http://www.collab.net/products/giteye) hinzugefügt. Welches über `/opt/giteyey/current/GitEye` gestartet wird
 
 Das Keyboard ist auf deutsch, allerdings wurden keine weiteren Language Einstellungen vorgenommen.
 Achtung: Es wurde nicht überprüft ob die Shortcuts vom Desktop Environment und IntelliJ sich nicht "beißen". Wenn ihr eine Einstellung habt, die ihr gut findet, dann könnt ihr sie mir gerne schicken. Für xfce findet ihr die unter `.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-keyboard-shortcuts.xml`.
 
 Bitte installiert ggf. die aktualisierte Version der VirtualBox Guest Extensions.
+
+# Erweiterungen
+
+* Es kann auch einfach weitere Editoren installiert werden:
+
+* atom
+* vim
+
+Für vim müsst ihr dazu in die `customizatio.yml`
+
+Folgende Zeile einfügen
+
+    vim_install: True
+
+Für atom ist ebenfalls nur `atom_install: True` notwendig.
+
+Ihr könnt aber noch Packages direkt installieren lassen:
+
+      atom_desktop_icon: True
+      atom_packages:
+      - ansible-snippets
+      - ansible-vault
+      - asciidoc-preview
+      - language-ansible
+      - language-asciidoc
+      - markdown-writer
+      - markdown-table-formatter
+      - linter-ansible-linting
+      - atom-typescript
+
+
+## Known Issues
+
+* Es wird nicht überprüft, ob eine globale Library schon installiert ist, sondern es wird nochmals versucht sie zu installieren (kostet Zeit)

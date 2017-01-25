@@ -5,5 +5,8 @@
 - src: cmprescott.chrome
   version: 0.2.2
 
+- src: rattermeyer.vim
+  version: v0.1
+  
   #- src: rattermeyer.virtualbox-guest
   #  version: v0.1

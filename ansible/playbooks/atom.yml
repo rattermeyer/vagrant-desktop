@@ -1,0 +1,66 @@
+- hosts: localhost
+  vars:
+    atom_ver: '1.13.0'
+    atom_mirror: 'https://github.com/atom/atom/releases/download'
+    atom_deb_platform: 'amd64'
+    atom_rpm_platform: 'x86_64'
+
+    atom_deb: 'atom-{{atom_deb_platform}}.deb'
+    atom_deb_url: '{{atom_mirror}}/v{{atom_ver}}/{{atom_deb}}'
+
+    atom_user: "{{ user_account }}"
+    atom_desktop_icon: false
+  vars_files:
+    - ../default.yml
+    - ../customization.yml
+
+
+  tasks:
+  - name: (Debian) download atom
+    become: True
+    get_url:
+      url: "{{atom_deb_url}}"
+      dest: "/opt/{{atom_deb}}"
+
+  - name: (Debian) install atom
+    become: True
+    apt:
+      deb: "/opt/{{atom_deb}}"
+
+  - name: Ensure user Atom directory
+    become: True
+    become_user: "{{ atom_user }}"
+    file:
+      path: /home/{{ atom_user }}/.atom
+      state: directory
+
+  #- name: Copy project manager config
+  #  become: True
+  #  copy:
+  #    src: projects.cson
+  #    dest: /home/{{ atom_user }}/.atom/projects.cson
+  #    mode: 0644
+  #    owner: "{{ atom_user }}"
+  #    group: "{{ atom_user }}"
+
+  - name: Setup desktop icons
+    become: True
+    become_user: "{{ atom_user }}"
+    copy:
+      src: /usr/share/applications/{{ item }}
+      dest: /home/{{ atom_user }}/Desktop/{{ item }}
+      mode: a+x
+    with_items:
+      - atom.desktop
+    when: "{{ atom_desktop_icon }}"
+
+  - debug:
+      msg: "packages={{ atom_packages }}"
+  - name: install packages
+    become: yes
+    become_user: "{{ atom_user }}"
+    shell: >
+      apm list --bare | grep -E '^{{ item }}@' && echo 'Already installed.' || apm install '{{ item }}'
+    with_items: "{{ atom_packages | default([])}}"
+    register: apm_result
+    changed_when: "'Already installed.' not in apm_result.stdout"

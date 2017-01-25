@@ -1,0 +1,28 @@
+---
+- hosts: localhost
+  become: True
+  vars:
+    giteye_version: 1.12.0
+  tasks:
+  - name: "Download giteye"
+    get_url:
+      url: "https://downloads-guests.open.collab.net/files/documents/61/12536/GitEye-{{ giteye_version }}-linux.x86_64.zip"
+      dest: "/opt/giteye-{{ giteye_version }}.zip"
+
+  - name: "Ensure directory exists"
+    file:
+      path: "/opt/giteye/giteye-{{ giteye_version }}"
+      state: directory
+
+  - name: "Unzip giteye"
+    unarchive:
+      src: "/opt/giteye-{{ giteye_version }}.zip"
+      dest: "/opt/giteye/giteye-{{ giteye_version }}/"
+      remote_src: True
+      creates: "/opt/giteye/giteye-{{ giteye_version }}/GitEye"
+
+  - name: "link current"
+    file:
+      src: "/opt/giteye/giteye-{{ giteye_version }}"
+      path: "/opt/giteye/current"
+      state: link
