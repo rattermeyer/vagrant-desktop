@@ -33,3 +33,15 @@ remove_apt_proxy: False
 #  apt_proxy: http://192.168.33.254:3142
 #  http_proxy: http://192.168.33.254:3128
 #
+vim_install: True
+atom_install: True
+atom_desktop_icon: True
+atom_packages:
+  - ansible-snippets
+  - ansible-vault
+  - asciidoc-preview
+  - language-ansible
+  - markdown-writer
+  - markdown-table-formatter
+  - linter-ansible-linting
+  - atom-typescript

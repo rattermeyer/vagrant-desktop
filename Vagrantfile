@@ -52,8 +52,6 @@ Vagrant.configure(2) do |config|
     vb.customize ["modifyvm", :id, "--accelerate3d", "on"]
     vb.customize ["modifyvm", :id, "--draganddrop", "bidirectional"]
     vb.customize ["modifyvm", :id, "--vram", "256"]
-    vb.customize ["modifyvm", :id, "--audio", "alsa"]
-    vb.customize ["modifyvm", :id, "--audiocontroller", "ac97"]
     vb.customize ["storageattach", :id, "--storagectl", "IDE Controller", "--port", "1", "--device", "0", "--type", "dvddrive", "--medium", "emptydrive"]
   end
 
