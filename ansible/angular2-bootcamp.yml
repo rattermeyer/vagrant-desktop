@@ -63,4 +63,8 @@
     - customization.yml
 
 - include: playbooks/angular2-bootcamp-unterlagen.yml
+
+- include: playbooks/atom.yml
   when: atom_install == True
+
+- include: playbooks/git-eye.yml
