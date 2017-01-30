@@ -71,6 +71,14 @@
       - Utility
       - Development
 
+  - name: "link google chrome desktop launcher"
+    file:
+      src: /usr/share/applications/google-chrome.desktop
+      dest: "/home/{{ user_account }}/Desktop/google-chrome.desktop"
+      state: link
+      owner: "{{user_account}}"
+      mode: a+x
+
   vars_files:
     - default.yml
     - customization.yml

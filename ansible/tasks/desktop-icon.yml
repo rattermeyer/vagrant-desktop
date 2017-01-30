@@ -1,3 +1,9 @@
+- name: "ensure Desktop directoy is present"
+  file:
+    path: "/home/{{ icon_user_account }}/Desktop"
+    owner: "{{icon_user_account}}"
+    state: directory
+
 - name: "create desktop icon"
   template:
     src: "app.desktop.j2"
