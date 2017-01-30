@@ -3,6 +3,8 @@
   become: True
   vars:
     giteye_version: 1.12.0
+  vars_files:
+  - ../customization.yml
   tasks:
   - name: "Download giteye"
     get_url:
@@ -26,3 +28,17 @@
       src: "/opt/giteye/giteye-{{ giteye_version }}"
       path: "/opt/giteye/current"
       state: link
+
+  - include: ../tasks/desktop-icon.yml
+    icon_user_account: "{{ user_account }}"
+    entry:
+      id: giteye
+      name: GitEye
+      exec: /opt/giteye/current/GitEye
+      generic_name: VCS Browser
+      icon: /opt/giteye/current/icon.xpm
+      categories:
+      - GNOME
+      - GTK
+      - Utility
+      - Development

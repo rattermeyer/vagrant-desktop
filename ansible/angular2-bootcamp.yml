@@ -56,7 +56,20 @@
 
   tasks:
   - include: tasks/keyboard.yml
-
+  - include: tasks/desktop-icon.yml
+    icon_user_account: "{{ user_account }}"
+    become: True
+    entry:
+      id: idea
+      name: IntelliJ IDEA
+      exec: /opt/intellij/current/bin/idea.sh
+      generic_name: IDE
+      icon: /opt/intellij/current/bin/idea.png
+      categories:
+      - GNOME
+      - GTK
+      - Utility
+      - Development
 
   vars_files:
     - default.yml

@@ -1,0 +1,12 @@
+[Desktop Entry]
+Name={{ entry.name | mandatory }}
+Comment={{ entry.comment | default()}}
+GenericName={{ entry.generic_name | default() }}
+Exec={{ entry.exec | mandatory }}
+Icon={{ entry.icon }}
+Type=Application
+StartupNotify=true
+Categories={{ entry.categories | join(';')}}
+MimeType=text/plain;
+Path={{ entry.path | default()}}
+Terminal={{ entry.terminal | default('false')}}

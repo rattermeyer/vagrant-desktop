@@ -1,0 +1,6 @@
+- name: "create desktop icon"
+  template:
+    src: "app.desktop.j2"
+    dest: "/home/{{ icon_user_account }}/Desktop/{{ entry.id }}.desktop"
+    mode: a+x
+    owner: "{{icon_user_account}}"
