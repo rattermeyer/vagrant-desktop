@@ -58,6 +58,8 @@
     atom_user: "{{ user_account }}"
     when: atom_install == True
 
+  - role: giteye
+
   tasks:
   - include: tasks/keyboard.yml
   - include: tasks/desktop-icon.yml
@@ -88,5 +90,3 @@
     - customization.yml
 
 - include: playbooks/angular2-bootcamp-unterlagen.yml
-
-- include: playbooks/git-eye.yml

@@ -1,0 +1,37 @@
+---
+- name: "Download giteye"
+  get_url:
+    url: "https://downloads-guests.open.collab.net/files/documents/61/12536/GitEye-{{ giteye_version }}-linux.x86_64.zip"
+    dest: "/opt/giteye-{{ giteye_version }}.zip"
+
+- name: "Ensure directory exists"
+  file:
+    path: "/opt/giteye/giteye-{{ giteye_version }}"
+    state: directory
+
+- name: "Unzip giteye"
+  unarchive:
+    src: "/opt/giteye-{{ giteye_version }}.zip"
+    dest: "/opt/giteye/giteye-{{ giteye_version }}/"
+    remote_src: True
+    creates: "/opt/giteye/giteye-{{ giteye_version }}/GitEye"
+
+- name: "link current"
+  file:
+    src: "/opt/giteye/giteye-{{ giteye_version }}"
+    path: "/opt/giteye/current"
+    state: link
+
+- include: ../tasks/desktop-icon.yml
+  icon_user_account: "{{ user_account }}"
+  entry:
+    id: giteye
+    name: GitEye
+    exec: /opt/giteye/current/GitEye
+    generic_name: VCS Browser
+    icon: /opt/giteye/current/icon.xpm
+    categories:
+    - GNOME
+    - GTK
+    - Utility
+    - Development
