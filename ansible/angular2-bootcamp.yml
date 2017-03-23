@@ -54,6 +54,10 @@
     vundle_packages: "{{ vundle_packages_essential + vundle_packages_ui + vundle_packages_gui + vundle_packages_languages }}"
     when: vim_install == True
 
+  - role: atom
+    atom_user: "{{ user_account }}"
+    when: atom_install == True
+
   tasks:
   - include: tasks/keyboard.yml
   - include: tasks/desktop-icon.yml
@@ -84,8 +88,5 @@
     - customization.yml
 
 - include: playbooks/angular2-bootcamp-unterlagen.yml
-
-- include: playbooks/atom.yml
-  when: atom_install == True
 
 - include: playbooks/git-eye.yml
