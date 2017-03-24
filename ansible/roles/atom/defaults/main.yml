@@ -1,0 +1,10 @@
+atom_ver: '1.13.0'
+atom_mirror: 'https://github.com/atom/atom/releases/download'
+atom_deb_platform: 'amd64'
+atom_rpm_platform: 'x86_64'
+
+atom_deb: 'atom-{{atom_deb_platform}}.deb'
+atom_deb_url: '{{atom_mirror}}/v{{atom_ver}}/{{atom_deb}}'
+
+atom_user: "{{ user_account }}"
+atom_desktop_icon: false
