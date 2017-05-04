@@ -1,0 +1,17 @@
+---
+- hosts: localhost
+  become: True
+  tasks:
+  - name: "install system packages"
+    apt:
+      name: "{{item}}"
+    with_items:
+    - "python-apt"
+    - "python-pip"
+    - "htop"
+    - "clusterssh"
+  - name: "install global python packages"
+    pip:
+      name: "{{item}}"
+    with_items:
+    - "ansible-lint"

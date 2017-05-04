@@ -17,13 +17,15 @@
     - apt: update_cache=true
       when: mirrors.changed
       tags: configuration
-    - name: Pre-condition to create user
-      apt: name=whois
-    - name: create user
-      file: path="{{home_base}}" state=directory mode=0755
-    - group: name=docker
-    - group: name=admin
-    - user: name="{{user}}" shell=/bin/bash password="{{password}}" groups=admin,docker
+    - block:
+      - name: Pre-condition to create user
+        apt: name=whois
+      - name: create user
+        file: path="{{home_base}}" state=directory mode=0755
+      - group: name=docker
+      - group: name=admin
+      - user: name="{{user}}" shell=/bin/bash password="{{password}}" groups=admin,docker
+      when: "user is defined"
     - name: configure apt-proxy
       template: src=templates/01proxy.j2 dest={{apt_proxy_conf}}
       when: use_apt_proxy == true
@@ -56,15 +58,15 @@
       file: dest="{{apt_proxy_conf}}" state=absent
       when: remove_apt_proxy == true
   vars:
-    user: "dev"
-    user_name: "Richard Attermeyer"
-    user_email: "richard.attermeyer@gmail.com"
-    ubuntu_release: trusty
+    # user: "dev"
+    # user_name: "Richard Attermeyer"
+    # user_email: "richard.attermeyer@gmail.com"
+    # ubuntu_release: trusty
     # password: pleasechange --> generate e.g. using mkpasswd --method=SHA-512
-    password: "$6$R/NgeKnN$Nlq.TC54GwBbH3oWhonjLDXeGMH56JpnpIvXLzHNHUfvl7/YK8.dxf6BaASaJJh1mWr20OuS9kMEexiLbZ9xQ/"
-    home_base: "/home"
-    home: "{{home_base}}/{{user}}"
-    desktop: "unity"
+    # password: "$6$R/NgeKnN$Nlq.TC54GwBbH3oWhonjLDXeGMH56JpnpIvXLzHNHUfvl7/YK8.dxf6BaASaJJh1mWr20OuS9kMEexiLbZ9xQ/"
+    # home_base: "/home"
+    # home: "{{home_base}}/{{user}}"
+    # desktop: "unity"
     roles_included:
       - vim
       - jekyll
@@ -77,6 +79,6 @@
       - intellij
       - rvm
       - asciidoc
-    use_mirror: true
+    use_mirror: false
   vars_files:
     - external_vars.yml
