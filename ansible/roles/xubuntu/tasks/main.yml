@@ -1,10 +1,5 @@
 ## vim: noai:ts=2:sw=2:expandtab
 ---
-- name: ambiance theme repository
-  apt_repository: repo='ppa:ravefinity-project/ppa'
-- name: xfwm-theme-manager Repository
-  become: True
-  apt_repository: repo='ppa:rebuntu16/other-stuff'
 - name: additional packages
   apt: name="{{item}}"
   with_items:
@@ -12,8 +7,6 @@
     - cairo-dock
     - libreoffice-gtk
     - xfce-theme-manager
-    - ambiance-flat-colors
-    - ambiance-radiance-xfce-lxde
     - radiance-flat-colors
     - xscreensaver
 - name: remove packages

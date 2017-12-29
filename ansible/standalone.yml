@@ -16,20 +16,15 @@
     - "desktop={{desktop|default('')}}"
 
   roles:
-  - role: xubuntu
-    xubuntu_user: "{{ user_account }}"
-    become: True
-    when: "desktop is defined and desktop == 'xubuntu'"
-
   - role: cmprescott.chrome
     become: True
 
-#  - role: nvm
-#    nvm_version: v0.33.0
-#    nvm_npm_global_packages:
-#    - angular-cli
-#    tags:
-#    - nvm
+  - role: nvm
+    nvm_version: v0.33.0
+    nvm_npm_global_packages:
+    - angular-cli
+    tags:
+    - nvm
 
 #  - role: rattermeyer.virtualbox-guest
 #    become: True
@@ -44,8 +39,8 @@
   - role: intellij
     intellij_user: "{{ user_account }}"
     become: True
-    version: 2017.1
-    build: 171.3780.107
+    version: "2017.2.5"
+    build: 172.4343.14
 
   - role: rattermeyer.git
     git:

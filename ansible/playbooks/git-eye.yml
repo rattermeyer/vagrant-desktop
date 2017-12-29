@@ -2,13 +2,13 @@
 - hosts: localhost
   become: True
   vars:
-    giteye_version: 1.12.0
+    giteye_version: 2.0.0
   vars_files:
   - ../customization.yml
   tasks:
   - name: "Download giteye"
     get_url:
-      url: "https://downloads-guests.open.collab.net/files/documents/61/12536/GitEye-{{ giteye_version }}-linux.x86_64.zip"
+      url: "https://downloads-guests.open.collab.net/files/documents/61/13437/GitEye-{{giteye_version}}-linux.x86_64.zip"
       dest: "/opt/giteye-{{ giteye_version }}.zip"
 
   - name: "Ensure directory exists"

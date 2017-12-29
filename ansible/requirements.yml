@@ -3,7 +3,7 @@
   version: v0.4
 
 - src: cmprescott.chrome
-  version: 0.2.2
+  version: 0.2.4
 
 - src: rattermeyer.vim
   version: v0.1
