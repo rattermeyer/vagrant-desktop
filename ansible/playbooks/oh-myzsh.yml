@@ -1,0 +1,19 @@
+---
+- hosts: localhost
+  tasks:
+    - name: ensure required packags are installed
+      apt:
+        name: "{{item}}"
+      become: True
+      with_items:
+        - zsh
+        - git-core
+        - fonts-powerline
+
+    - name: customize theme
+      lineinfile:
+        path: ~/.zshrc
+        regexp: "^ZSH_THEME="
+        line: 'ZSH_THEME="agnoster"'
+
+

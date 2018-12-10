@@ -2,3 +2,4 @@
 data/home
 customization.yml
 /.project
+*.retry

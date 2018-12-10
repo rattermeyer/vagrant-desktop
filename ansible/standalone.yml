@@ -89,4 +89,8 @@
 - include: playbooks/atom.yml
   when: atom_install == True
 
+- include: playbooks/vscode.yml
+  when: vscode_install == True
+
 - include: playbooks/git-eye.yml
+

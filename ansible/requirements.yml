@@ -1,4 +1,7 @@
 ---
+- src: angstwad.docker_ubuntu
+  version: v3.3.4
+
 - src: rattermeyer.git
   version: v0.4
 
@@ -7,6 +10,9 @@
 
 - src: rattermeyer.vim
   version: v0.1
+
+- src: ngetchell.vscode
+  version: v1.0.1
   
   #- src: rattermeyer.virtualbox-guest
   #  version: v0.1
