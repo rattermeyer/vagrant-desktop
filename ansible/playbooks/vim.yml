@@ -1,0 +1,8 @@
+- hosts: localhost
+  roles:
+  - role: rattermeyer.vim
+    become: True
+    user: "{{ user_account }}"
+    vundle_packages: "{{ vundle_packages_essential + vundle_packages_ui + vundle_packages_gui + vundle_packages_languages }}"
+  vars_files:
+  - customization.yml
